@@ -1,0 +1,18 @@
+{ config, pkgs, ... }:
+
+{
+  systemd.user.services.plasma-bspwm = {
+    Unit = {
+      Description = "Launch Plasma on bspwm";
+      Before = "plasma-workspace.target";
+    };
+    Service = {
+      ExecStart = "${pkgs.bspwm}/bin/bspwm -c /etc/nixos/config/bspwm/bspwmrc";
+      Slice = "session.slice";
+      Restart = "on-failure";
+      };
+    Install = {
+      WantedBy = ["default.target"];
+    };
+  };
+}
